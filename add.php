@@ -19,7 +19,7 @@ if (isset($_POST['ajouter'])) {
 
     if ($response) {
         echo "L'opération a bien été ajoutée";
-        header("Location: add.php");
+        header("Location: index.php");
         exit;
     } else {
         echo "Erreur lors de l'ajout";
