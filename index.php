@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="fr">
 <?php
-require_once './vendor/autoload.php';
+require './vendor/autoload.php';
 require './includes/_database.php';
 session_start();
 $_SESSION['token'] = md5(uniqid(mt_rand(), true));
@@ -14,6 +14,33 @@ $results = $query->fetchAll();
 ?>
 
 
+<?php
+function calculerSoldeCompte()
+{
+    global $dbCo;
+    // Connexion à la base de données
+    require_once './includes/_database.php';
+
+    // Requête pour calculer le montant total émis pour le compte
+    $queryEmis = $dbCo->prepare("SELECT SUM(amount) AS total_emis FROM transaction WHERE amount < 0");
+    $queryEmis->execute();
+    $resultEmis = $queryEmis->fetch();
+    $montantEmis = $resultEmis['total_emis'];
+
+    // Requête pour calculer le montant total perçu pour le compte
+    $queryPerçu = $dbCo->prepare("SELECT SUM(amount) AS total_perçu FROM transaction WHERE amount > 0");
+    $queryPerçu->execute();
+    $resultPerçu = $queryPerçu->fetch();
+    $montantPerçu = $resultPerçu['total_perçu'];
+
+    // Calcul du solde en soustrayant le montant émis du montant perçu
+    $solde = $montantPerçu - $montantEmis;
+
+    return $solde;
+}
+echo calculerSoldeCompte();
+?>
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -24,6 +51,8 @@ $results = $query->fetchAll();
 </head>
 
 <body>
+
+
 
     <div class="container-fluid">
         <header class="row flex-wrap justify-content-between align-items-center p-3 mb-4 border-bottom">
@@ -57,13 +86,21 @@ $results = $query->fetchAll();
         </header>
     </div>
 
+
+
+
+
+
+
+
+
     <div class="container">
         <section class="card mb-4 rounded-3 shadow-sm">
             <div class="card-header py-3">
                 <h2 class="my-0 fw-normal fs-4">Solde aujourd'hui</h2>
             </div>
             <div class="card-body">
-                <p class="card-title pricing-card-title text-center fs-1">625,34 €</p>
+                <p class="card-title pricing-card-title text-center fs-1"><?php echo calculerSoldeCompte() . "€" ?></p>
             </div>
         </section>
 
@@ -106,6 +143,7 @@ $results = $query->fetchAll();
                             </td>
                         </tr>
                     <?php } ?>
+
                     <!-- 
 
 
