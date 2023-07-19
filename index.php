@@ -33,6 +33,10 @@ function calculerSoldeCompte()
 ?>
 
 
+
+
+
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -137,7 +141,8 @@ function calculerSoldeCompte()
                         </tr>
                     <?php } ?>
 
-                    <!-- 
+
+
 
 
                     <td width="50" class="ps-3">
@@ -259,15 +264,8 @@ function calculerSoldeCompte()
                             <span class="rounded-pill text-nowrap bg-success-subtle px-2">
                                 + 48,00 €
                             </span>
-                        </td> -->
-                    <td class="text-end text-nowrap">
-                        <a href="#" class="btn btn-outline-primary btn-sm rounded-circle">
-                            <i class="bi bi-pencil"></i>
-                        </a>
-                        <a href="#" class="btn btn-outline-danger btn-sm rounded-circle">
-                            <i class="bi bi-trash"></i>
-                        </a>
-                    </td>
+                        </td>
+
                     </tr>
                     </tbody>
                 </table>
