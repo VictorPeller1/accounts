@@ -12,34 +12,26 @@ $query->execute();
 $results = $query->fetchAll();
 // var_dump($results);
 ?>
-
-
 <?php
 function calculerSoldeCompte()
 {
     global $dbCo;
-    // Connexion à la base de données
-    require_once './includes/_database.php';
 
-    // Requête pour calculer le montant total émis pour le compte
-    $queryEmis = $dbCo->prepare("SELECT SUM(amount) AS total_emis FROM transaction WHERE amount < 0");
-    $queryEmis->execute();
-    $resultEmis = $queryEmis->fetch();
-    $montantEmis = $resultEmis['total_emis'];
+    // Requête pour calculer le montant total des opérations pour le compte
+    $queryMontantTotal = $dbCo->prepare("SELECT SUM(amount) AS montant_total FROM transaction");
+    $queryMontantTotal->execute();
+    $resultMontantTotal = $queryMontantTotal->fetch();
+    $montantTotal = $resultMontantTotal['montant_total'];
 
-    // Requête pour calculer le montant total perçu pour le compte
-    $queryPerçu = $dbCo->prepare("SELECT SUM(amount) AS total_perçu FROM transaction WHERE amount > 0");
-    $queryPerçu->execute();
-    $resultPerçu = $queryPerçu->fetch();
-    $montantPerçu = $resultPerçu['total_perçu'];
-
-    // Calcul du solde en soustrayant le montant émis du montant perçu
-    $solde = $montantPerçu - $montantEmis;
+    // Calcul du solde
+    $solde = $montantTotal;
 
     return $solde;
 }
-echo calculerSoldeCompte();
+
+
 ?>
+
 
 <head>
     <meta charset="UTF-8">
@@ -100,7 +92,8 @@ echo calculerSoldeCompte();
                 <h2 class="my-0 fw-normal fs-4">Solde aujourd'hui</h2>
             </div>
             <div class="card-body">
-                <p class="card-title pricing-card-title text-center fs-1"><?php echo calculerSoldeCompte() . "€" ?></p>
+                <p class="card-title pricing-card-title text-center fs-1"><?php echo calculerSoldeCompte() . "€"
+                                                                            ?></p>
             </div>
         </section>
 
